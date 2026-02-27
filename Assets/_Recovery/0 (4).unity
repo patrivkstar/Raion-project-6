@@ -119,26 +119,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &681407004 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6590039604281386910, guid: 7e5b0047f881c8044a1ffa1d565363d2, type: 3}
-  m_PrefabInstance: {fileID: 1649299481322775319}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &681407010
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 681407004}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94cfea2d9be6100499e2501841d7895b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
-  enemyPrefab: {fileID: 6590039604281386910, guid: 7e5b0047f881c8044a1ffa1d565363d2, type: 3}
-  spawnRange: 10
-  spawnTime: 3
 --- !u!1 &1111173279
 GameObject:
   m_ObjectHideFlags: 0
@@ -291,7 +271,7 @@ GameObject:
   - component: {fileID: 2080499942}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Player
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -506,13 +486,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Basic
       objectReference: {fileID: 0}
+    - target: {fileID: 6911068618362513488, guid: 7e5b0047f881c8044a1ffa1d565363d2, type: 3}
+      propertyPath: enemyPrefab
+      value: 
+      objectReference: {fileID: 6590039604281386910, guid: 7e5b0047f881c8044a1ffa1d565363d2, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 6590039604281386910, guid: 7e5b0047f881c8044a1ffa1d565363d2, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 681407010}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7e5b0047f881c8044a1ffa1d565363d2, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
