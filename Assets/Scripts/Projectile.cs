@@ -2,31 +2,28 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    public float speed = 10f;
-    public float lifeTime = 0.3f;
+    public float speed = 12f;
+    public float lifeTime = 0.25f;
 
-    Vector2 direction;
+    Vector2 moveDir;
 
     public void SetDirection(Vector2 dir)
     {
-        direction = dir.normalized;
+        moveDir = dir.normalized;
+
+        // sesuai arah rotatenya
+
+        float angle = Mathf.Atan2(moveDir.y, moveDir.x) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0f, 0f, angle);
     }
 
     void Update()
     {
-        transform.Translate(direction * speed * Time.deltaTime);
+        transform.position += (Vector3)moveDir * speed * Time.deltaTime;
     }
 
     void Start()
     {
         Destroy(gameObject, lifeTime);
-    }
-
-    void OnTriggerEnter2D(Collider2D other)
-    {
-        if(other.CompareTag("Enemy"))
-        {
-            Destroy(other.gameObject);
-        }
     }
 }

@@ -11,8 +11,7 @@ public class PlayerAttack : MonoBehaviour
     {
         timer += Time.deltaTime;
 
-        if (Input.GetMouseButtonDown(0)
-            && timer >= attackCooldown)
+        if (Input.GetMouseButtonDown(0) && timer >= attackCooldown)
         {
             Attack();
             timer = 0;
@@ -21,36 +20,16 @@ public class PlayerAttack : MonoBehaviour
 
     void Attack()
     {
-        Vector3 mousePos = Input.mousePosition;
-
-        mousePos =
-            Camera.main.ScreenToWorldPoint(mousePos);
-
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mousePos.z = 0f;
 
-        Vector2 direction =
-            mousePos - transform.position;
-
+        Vector2 direction = (mousePos - transform.position);
         direction.Normalize();
 
-        Vector3 spawnPos =
-            transform.position +
-            (Vector3)direction * 0.7f;
+        Vector3 spawnPos = transform.position + (Vector3)direction * 0.7f;
 
-        GameObject proj =
-            Instantiate(
-                projectilePrefab,
-                spawnPos,
-                Quaternion.identity);
+        GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
 
-        proj.GetComponent<Projectile>()
-            .SetDirection(direction);
-
-        float angle =
-            Mathf.Atan2(direction.y, direction.x)
-            * Mathf.Rad2Deg;
-
-        proj.transform.rotation =
-            Quaternion.Euler(0, 0, angle);
+        proj.GetComponent<Projectile>().SetDirection(direction);
     }
 }
