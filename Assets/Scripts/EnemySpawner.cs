@@ -3,20 +3,35 @@ using UnityEngine;
 public class EnemySpawner : MonoBehaviour
 {
     public GameObject enemyPrefab;
-    public float spawnRange = 10f;
-    public float spawnTime = 3f;
+    public Transform player;
 
-    void Start()
+    public float spawnRadius = 12f;
+    public float delay = 2f;
+
+    public int maxEnemy = 30;
+
+    float timer;
+
+    void Update()
     {
-        InvokeRepeating("SpawnEnemy", 1f, spawnTime);
+        timer += Time.deltaTime;
+
+        if(timer >= delay)
+        {
+            timer = 0;
+            SpawnEnemy();
+        }
     }
 
     void SpawnEnemy()
     {
-        Vector2 randomPos =
-            (Vector2)transform.position +
-            Random.insideUnitCircle * spawnRange;
+        if(GameObject.FindGameObjectsWithTag("Enemy").Length >= maxEnemy)
+            return;
 
-        Instantiate(enemyPrefab, randomPos, Quaternion.identity);
+        Vector2 pos =
+            (Vector2)player.position +
+            Random.insideUnitCircle * spawnRadius;
+
+        Instantiate(enemyPrefab,pos,Quaternion.identity);
     }
 }
