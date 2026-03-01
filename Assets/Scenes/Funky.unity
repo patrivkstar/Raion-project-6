@@ -473,8 +473,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
   speed: 5
-  spriteDepan: {fileID: -8087839074598449383, guid: 5f0abeae9cf853f42a8266dc91c4c484, type: 3}
-  spriteBelakang: {fileID: 7083641967855512282, guid: 56fb2e4d90523da478ae4ace3580053d, type: 3}
+  spriteDepan: {fileID: 6204271628757609076, guid: 2ec7ea7cb8d0b1b499ddc7624e53207a, type: 3}
+  spriteBelakang: {fileID: 6204271628757609076, guid: 2ec7ea7cb8d0b1b499ddc7624e53207a, type: 3}
   spriteSamping: {fileID: 6204271628757609076, guid: 2ec7ea7cb8d0b1b499ddc7624e53207a, type: 3}
 --- !u!50 &2080499943
 Rigidbody2D:
