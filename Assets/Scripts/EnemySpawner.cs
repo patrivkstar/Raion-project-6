@@ -21,6 +21,8 @@ public class EnemySpawner : MonoBehaviour
             timer = 0;
             SpawnEnemy();
         }
+        if (player == null) 
+        return;
     }
 
     void SpawnEnemy()

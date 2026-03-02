@@ -1,21 +1,40 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHP = 100;
-    int hp;
+    private int hp;
+
+    [Header("UI Reference")]
+    public Slider healthSlider;
 
     void Start()
     {
         hp = maxHP;
+        healthSlider.maxValue = maxHP;
+        healthSlider.value = hp;
     }
 
     public void TakeDamage(int dmg)
     {
         hp -= dmg;
-        Debug.Log("HP: " + hp);
+        healthSlider.value = hp; 
 
-        if(hp <= 0)
-            Destroy(gameObject);
+        if(hp <= 0) Die();
+    }
+
+    void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("EnemyAttack"))
+        {
+            TakeDamage(10);
+            Destroy(collision.gameObject);
+        }
+    }
+
+    void Die()
+    {
+        Destroy(gameObject);
     }
 }
