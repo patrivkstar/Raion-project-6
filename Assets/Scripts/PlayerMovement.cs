@@ -2,51 +2,44 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 5;
+    public float moveSpeed = 5f;
+    public Rigidbody2D rb;
+    public Animator animator; 
+    
+    private Vector2 movement;
+    private bool isFacingRight = true;
 
-    private Rigidbody2D rb;
-    private SpriteRenderer sr;
-
-    public Sprite spriteDepan;
-    public Sprite spriteBelakang;
-    public Sprite spriteSamping;
-
-    void Awake()
+    void Update()
     {
-        rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
+        movement.x = Input.GetAxisRaw("Horizontal");
+        movement.y = Input.GetAxisRaw("Vertical");
+        
+        animator.SetFloat("Speed", movement.sqrMagnitude);
+
+        // Cek arah jalan dan jalankan fungsi Flip jika arahnya berlawanan
+        if (movement.x > 0 && !isFacingRight) 
+        {
+            Flip();
+        }
+        else if (movement.x < 0 && isFacingRight) 
+        {
+            Flip();
+        }
     }
 
     void FixedUpdate()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertical = Input.GetAxis("Vertical");
-
-        Vector2 move = new Vector2(horizontal, vertical);
-        rb.linearVelocity = move * speed;
-
-        GantiSprite(move);
+        rb.MovePosition(rb.position + movement.normalized * moveSpeed * Time.fixedDeltaTime);
     }
 
-    void GantiSprite(Vector2 arah)
+    void Flip()
     {
-        if (arah.y > 0)
-        {
-            sr.sprite = spriteBelakang;
-        }
-        else if (arah.y < 0)
-        {
-            sr.sprite = spriteDepan;
-        }
-        else if (arah.x != 0)
-        {
-            sr.sprite = spriteSamping;
-
-            // flip kalau ke kiri
-            if (arah.x < 0)
-                sr.flipX = true;
-            else
-                sr.flipX = false;
-        }
+        // Membalikkan status arah
+        isFacingRight = !isFacingRight;
+        
+        
+        Vector3 scaler = transform.localScale;
+        scaler.x *= -1;
+        transform.localScale = scaler;
     }
 }

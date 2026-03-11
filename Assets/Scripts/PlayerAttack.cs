@@ -1,35 +1,73 @@
 using UnityEngine;
+using System.Collections;
 
 public class PlayerAttack : MonoBehaviour
 {
-    public GameObject projectilePrefab;
-    public float attackCooldown = 0.4f;
+    [Header("Visual Components")]
+    public GameObject attackHitbox;    
+    public SpriteRenderer handRenderer; 
+    public Animator handAnimator;      
+    public Animator effectAnimator;    
 
-    float timer;
+    [Header("Aiming System")]
+    public Transform aimPivot;       
+    public MonoBehaviour aimScript;  
+
+    [Header("90 BPM Settings")]
+    [SerializeField] private float attackDuration = 0.2f; 
+    [SerializeField] private float attackCooldown = 0.66f; 
+    
+    private float nextAttackTime = 0f;
+    private bool isAttacking = false;
+
+    void Start()
+    {
+        attackHitbox.SetActive(false);
+        handRenderer.enabled = false;
+    }
 
     void Update()
     {
-        timer += Time.deltaTime;
-
-        if (Input.GetMouseButtonDown(0) && timer >= attackCooldown)
+        if (Input.GetMouseButtonDown(0) && Time.time >= nextAttackTime && !isAttacking)
         {
-            Attack();
-            timer = 0;
+            StartCoroutine(PerformAttackRoutine());
+            nextAttackTime = Time.time + attackCooldown;
         }
     }
 
-    void Attack()
+    IEnumerator PerformAttackRoutine()
     {
+        isAttacking = true;
+
+        LockAttackDirection();
+        if (aimScript != null) aimScript.enabled = false;
+
+        handRenderer.enabled = true;
+        attackHitbox.SetActive(true);
+
+        if (handAnimator != null) handAnimator.Play("Hand_Attack", -1, 0f);
+        if (effectAnimator != null) effectAnimator.Play("Effect_Attack", -1, 0f);
+
+        yield return new WaitForSeconds(attackDuration);
+
+        attackHitbox.SetActive(false);
+        handRenderer.enabled = false;
+
+        if (aimScript != null) aimScript.enabled = true;
+        
+        isAttacking = false;
+    }
+
+    void LockAttackDirection()
+    {
+        if (aimPivot == null) return;
         Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mousePos.z = 0f;
+        Vector2 direction = (Vector2)mousePos - (Vector2)aimPivot.position;
+        float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
 
-        Vector2 direction = (mousePos - transform.position);
-        direction.Normalize();
-
-        Vector3 spawnPos = transform.position + (Vector3)direction * 0.7f;
-
-        GameObject proj = Instantiate(projectilePrefab, spawnPos, Quaternion.identity);
-
-        proj.GetComponent<Projectile>().SetDirection(direction);
+        if (transform.localScale.x < 0) 
+            aimPivot.rotation = Quaternion.Euler(0, 0, angle + 180f);
+        else
+            aimPivot.rotation = Quaternion.Euler(0, 0, angle);
     }
 }
