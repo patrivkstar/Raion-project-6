@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed = 5f;
     private Vector2 moveInput;
     private Rigidbody2D rb;
+    private Animator anim;
 
     [Header("Dash Settings")]
     public float dashSpeed = 25f; 
@@ -25,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         tr = GetComponent<TrailRenderer>();
+        anim = GetComponentInChildren<Animator>();
         if (tr != null) tr.emitting = false;
     }
 
@@ -35,7 +37,11 @@ public class PlayerMovement : MonoBehaviour
         moveInput.x = Input.GetAxisRaw("Horizontal");
         moveInput.y = Input.GetAxisRaw("Vertical");
 
-       
+        if (anim != null)
+        {
+            anim.SetBool("isWalking", moveInput.sqrMagnitude > 0);
+        }
+        
         if (moveInput.x > 0 && !facingRight) {
             Flip();
         } else if (moveInput.x < 0 && facingRight) {
@@ -59,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
         canDash = false;
         isDashing = true;
         isInvincible = true;
+
+        if (anim != null) anim.SetBool("isWalking", false);
 
         Vector2 dashDirection = moveInput.normalized;
         rb.linearVelocity = dashDirection * dashSpeed;

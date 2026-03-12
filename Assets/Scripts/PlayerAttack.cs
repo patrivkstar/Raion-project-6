@@ -17,6 +17,9 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] private float attackDuration = 0.2f; 
     [SerializeField] private float attackCooldown = 0.66f; 
     
+    [Header("Combat Settings")]
+    public int damageAmount = 25;
+
     private float nextAttackTime = 0f;
     private bool isAttacking = false;
 
@@ -24,6 +27,10 @@ public class PlayerAttack : MonoBehaviour
     {
         attackHitbox.SetActive(false);
         handRenderer.enabled = false;
+        
+        AttackHitboxDetector detector = attackHitbox.GetComponent<AttackHitboxDetector>();
+        if (detector == null) detector = attackHitbox.AddComponent<AttackHitboxDetector>();
+        detector.damage = damageAmount;
     }
 
     void Update()
@@ -69,5 +76,22 @@ public class PlayerAttack : MonoBehaviour
             aimPivot.rotation = Quaternion.Euler(0, 0, angle + 180f);
         else
             aimPivot.rotation = Quaternion.Euler(0, 0, angle);
+    }
+}
+
+public class AttackHitboxDetector : MonoBehaviour
+{
+    public int damage;
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("Boss"))
+        {
+            BossHealth boss = other.GetComponent<BossHealth>();
+            if (boss != null)
+            {
+                boss.TakeDamage(damage);
+            }
+        }
     }
 }
