@@ -6,20 +6,20 @@ public class EnemyHealth : MonoBehaviour
 {
     [Header("Statistik")]
     public int maxHealth = 3;
-    
+
     [Header("Animasi Mati (Drag File .anim ke Sini)")]
-    public AnimationClip deathAnimationClip; 
+    public AnimationClip deathAnimationClip;
 
     private int currentHealth;
-    private bool isDead = false; 
-    
+    private bool isDead = false;
+
     private SpriteRenderer sr;
     private Rigidbody2D rb;
     private Animator anim;
     private Collider2D col;
-    private EnemyAI aiScript; 
+    private EnemyAI aiScript;
 
-    public Action onDeathCallback; 
+    public Action onDeathCallback;
 
     void Start()
     {
@@ -36,7 +36,7 @@ public class EnemyHealth : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= damage;
-        
+
         StopAllCoroutines();
         StartCoroutine(HitEffect());
 
@@ -66,15 +66,18 @@ public class EnemyHealth : MonoBehaviour
         if (anim != null)
         {
             anim.Play("Kroco_Death", -1, 0f);
-            
-            if (deathAnimationClip != null) {
+
+            if (deathAnimationClip != null)
+            {
                 yield return new WaitForSeconds(deathAnimationClip.length);
-            } else {
+            }
+            else
+            {
                 yield return new WaitForSeconds(1f);
             }
         }
 
-        onDeathCallback?.Invoke(); 
+        onDeathCallback?.Invoke();
         Destroy(gameObject);
     }
 
@@ -84,5 +87,14 @@ public class EnemyHealth : MonoBehaviour
         {
             TakeDamage(1);
         }
+    }
+
+    public AudioClip deathSound;
+
+    void Die()
+    {
+        AudioSource.PlayClipAtPoint(deathSound, transform.position);
+
+        Destroy(gameObject);
     }
 }

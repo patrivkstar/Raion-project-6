@@ -17,6 +17,10 @@ public class PlayerHealth : MonoBehaviour
     private SpriteRenderer sr;
     private Rigidbody2D rb;
 
+    public AudioSource audioSource;
+    public AudioClip soundDamage;
+
+
     void Start()
     {
         Time.timeScale = 1f;
@@ -114,5 +118,10 @@ public class PlayerHealth : MonoBehaviour
         Time.timeScale = 1f;
 
         SceneManager.LoadScene("FirstMenu");
+    }
+
+    public void TakeDamage(int damage)
+    {
+        audioSource.PlayOneShot(soundDamage);
     }
 }
