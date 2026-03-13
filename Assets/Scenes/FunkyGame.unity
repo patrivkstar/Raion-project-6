@@ -732,6 +732,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BossHealth
   maxHealth: 20
+  shakeIntensity: 0.3
+  shakeDuration: 0.15
 --- !u!136 &378000236
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1939,6 +1941,37 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &1067140518
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1067140519}
+  m_Layer: 0
+  m_Name: BGM_Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1067140519
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1067140518}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.7303, y: 3.43501, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1125573191
 GameObject:
   m_ObjectHideFlags: 0
@@ -2044,9 +2077,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
   enemyPrefab: {fileID: 5727811270141393663, guid: 5fb1ff05e7203934aa72ea86ec345410, type: 3}
-  spawnInterval: 3
-  totalStokMusuh: 5
-  spawnRange: 3
+  amount: 1
+  spawnDelay: 1
 --- !u!4 &1151891650
 Transform:
   m_ObjectHideFlags: 0
@@ -3649,8 +3681,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WaveManager
   waves:
-  - {fileID: 1151891649}
-  - {fileID: 1964144527}
+  - waveName: 
+    spawnersInThisWave: []
+    intervalBetweenSpawners: 2
+  - waveName: 
+    spawnersInThisWave: []
+    intervalBetweenSpawners: 2
 --- !u!4 &1837460883
 Transform:
   m_ObjectHideFlags: 0
@@ -3801,9 +3837,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySpawner
   enemyPrefab: {fileID: 9025724956338641141, guid: e27501267e3378440a7e91a5e0e86ed0, type: 3}
-  spawnInterval: 3
-  totalStokMusuh: 5
-  spawnRange: 3
+  amount: 1
+  spawnDelay: 1
 --- !u!4 &1964144528
 Transform:
   m_ObjectHideFlags: 0
@@ -4155,3 +4190,4 @@ SceneRoots:
   - {fileID: 847849537}
   - {fileID: 714143320}
   - {fileID: 1222257376}
+  - {fileID: 1067140519}
