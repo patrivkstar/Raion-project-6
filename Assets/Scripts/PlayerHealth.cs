@@ -1,13 +1,15 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
     public int maxHealth = 100;
     public int health = 100;
 
-    public Image healthFill; // UI health bar
+    public Image healthFill;
+    public GameObject gameOverMenu;
 
     public float knockbackForce = 7f;
     private bool invulnerable = false;
@@ -17,13 +19,17 @@ public class PlayerHealth : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
+        Time.timeScale = 1f;
 
+        rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+
         if (sr == null)
         {
             sr = GetComponentInChildren<SpriteRenderer>();
         }
+
+        if (gameOverMenu != null) gameOverMenu.SetActive(false);
 
         UpdateHealthBar();
     }
@@ -35,7 +41,7 @@ public class PlayerHealth : MonoBehaviour
         health -= amount;
         Debug.Log("Darah Player berkurang! Sisa: " + health);
 
-        UpdateHealthBar(); // update UI
+        UpdateHealthBar();
 
         if (rb != null)
         {
@@ -44,22 +50,29 @@ public class PlayerHealth : MonoBehaviour
             rb.AddForce(knockDir * knockbackForce, ForceMode2D.Impulse);
         }
 
-        if (health <= 0) Die();
-        else StartCoroutine(Iframe());
+        if (health <= 0)
+        {
+            health = 0;
+            UpdateHealthBar();
+            Die();
+        }
+        else
+        {
+            StartCoroutine(Iframe());
+        }
     }
 
     void UpdateHealthBar()
     {
         if (healthFill != null)
         {
-            healthFill.fillAmount = (float)health / maxHealth;
+            healthFill.fillAmount = (float)health / (float)maxHealth;
         }
     }
 
     IEnumerator Iframe()
     {
         invulnerable = true;
-
         if (sr != null)
         {
             for (int i = 0; i < 4; i++)
@@ -74,12 +87,32 @@ public class PlayerHealth : MonoBehaviour
         {
             yield return new WaitForSeconds(0.8f);
         }
-
         invulnerable = false;
     }
 
     void Die()
     {
         Debug.Log("Game Over");
+
+        if (gameOverMenu != null)
+        {
+            gameOverMenu.SetActive(true);
+            Time.timeScale = 0f;
+
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
+        }
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void KeMenuUtama()
+    {
+        Time.timeScale = 1f;
+
+        SceneManager.LoadScene("FirstMenu");
     }
 }
