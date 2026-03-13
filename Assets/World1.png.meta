@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 53606b41ee2b48a46a5373bd65e85620
+guid: 3540de054cabd45448eb12d7f2a05636
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2606109467344510302
-    second: gentong_0
-  - first:
-      213: 8049887372060259653
-    second: gentong_1
+      213: 6515285212122945476
+    second: World1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -54,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 60
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -78,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -129,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: gentong_0
+      name: World1_0
       rect:
         serializedVersion: 2
-        x: 49
-        y: 89
-        width: 202
-        height: 172
+        x: 27
+        y: 16
+        width: 854
+        height: 478
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e5d1ad6b0c2ca2420800000000000000
-      internalID: 2606109467344510302
+      spriteID: 4c791f68161fa6a50800000000000000
+      internalID: 6515285212122945476
       vertices: []
       indices: 
       edges: []
@@ -154,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5d873b4dd81d79947945385d234e33b5
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -164,8 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      gentong_0: 2606109467344510302
-      gentong_1: 8049887372060259653
+      World1_0: 6515285212122945476
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
