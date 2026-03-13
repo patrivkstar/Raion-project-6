@@ -1,37 +1,51 @@
 using UnityEngine;
+using System;
 
 public class EnemySpawner : MonoBehaviour
 {
-    public GameObject enemyPrefab;
-    public Transform player;
+    public GameObject enemyPrefab; 
+    public float spawnInterval = 2f;
+    public int totalStokMusuh = 5;
+    public float spawnRange = 3f;
 
-    public float spawnRadius = 12f;
-    public float delay = 2f;
+    private int sisaStok;
+    private int musuhAktif = 0;
+    private float nextSpawnTime;
+    private bool isFinished = false;
 
-    public int maxEnemy = 30;
-
-    float timer;
+    public Action OnSpawnerClear; 
+    void Start()
+    {
+        sisaStok = totalStokMusuh;
+    }
 
     void Update()
     {
-        timer += Time.deltaTime;
-
-        if(timer >= delay)
+        if (sisaStok > 0 && Time.time >= nextSpawnTime)
         {
-            timer = 0;
             SpawnEnemy();
+            nextSpawnTime = Time.time + spawnInterval;
+        }
+
+        
+        if (sisaStok <= 0 && musuhAktif <= 0 && !isFinished)
+        {
+            isFinished = true;
+            OnSpawnerClear?.Invoke();
         }
     }
 
     void SpawnEnemy()
     {
-        if(GameObject.FindGameObjectsWithTag("Enemy").Length >= maxEnemy)
-            return;
+        Vector2 randomPos = (Vector2)transform.position + UnityEngine.Random.insideUnitCircle * spawnRange;
+        GameObject enemy = Instantiate(enemyPrefab, randomPos, Quaternion.identity);
+        
+        sisaStok--;
+        musuhAktif++;
 
-        Vector2 pos =
-            (Vector2)player.position +
-            Random.insideUnitCircle * spawnRadius;
-
-        Instantiate(enemyPrefab,pos,Quaternion.identity);
+      
+        enemy.GetComponent<EnemyHealth>().OnDeath += () => {
+            musuhAktif--;
+        };
     }
 }
