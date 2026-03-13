@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2184acca13b3fa149826605b3d6328e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHealth: 1
+  maxHealth: 4
   deathAnimationClip: {fileID: 7400000, guid: 1a5a4763c13d51941a0781348427d8ab, type: 2}
 --- !u!60 &7148280487092240585
 PolygonCollider2D:
