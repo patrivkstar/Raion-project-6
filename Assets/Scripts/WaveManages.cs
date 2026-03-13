@@ -1,42 +1,65 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 
 public class WaveManager : MonoBehaviour
 {
-    public List<EnemySpawner> waves; 
+    [System.Serializable]
+    public class Wave
+    {
+        public string waveName;
+        public List<EnemySpawner> spawnersInThisWave; 
+        public float intervalBetweenSpawners = 2.0f;
+    }
+
+    public List<Wave> waves;
     private int currentWaveIndex = 0;
 
     void Start()
     {
-        
-        foreach (var spawner in waves)
+        foreach (var wave in waves)
         {
-            spawner.gameObject.SetActive(false);
+            foreach (var s in wave.spawnersInThisWave) 
+            {
+                if(s != null) s.gameObject.SetActive(false);
+            }
         }
-
-      
-        StartWave(0);
+        StartCoroutine(WaveSequence());
     }
 
-    void StartWave(int index)
+    IEnumerator WaveSequence()
     {
-        if (index < waves.Count)
+        while (currentWaveIndex < waves.Count)
         {
-            Debug.Log("Memulai Wave " + (index + 1));
-            waves[index].gameObject.SetActive(true);
-            
-            
-            waves[index].OnSpawnerClear += NextWave;
-        }
-        else
-        {
-            Debug.Log("Semua Wave Selesai! Kamu Menang!");
-        }
-    }
+            Wave currentWave = waves[currentWaveIndex];
 
-    void NextWave()
-    {
-        currentWaveIndex++;
-        StartWave(currentWaveIndex);
+            foreach (var spawner in currentWave.spawnersInThisWave)
+            {
+                if (spawner != null)
+                {
+                    spawner.gameObject.SetActive(true);
+                    spawner.StartSpawning();
+                    yield return new WaitForSeconds(currentWave.intervalBetweenSpawners);
+                }
+            }
+
+            bool waveFinished = false;
+            while (!waveFinished)
+            {
+                waveFinished = true;
+                foreach (var spawner in currentWave.spawnersInThisWave)
+                {
+                    if (spawner != null && spawner.gameObject.activeInHierarchy)
+                    {
+                        waveFinished = false;
+                        break;
+                    }
+                }
+                yield return new WaitForSeconds(0.5f);
+            }
+
+            currentWaveIndex++;
+            yield return new WaitForSeconds(2.0f);
+        }
     }
 }

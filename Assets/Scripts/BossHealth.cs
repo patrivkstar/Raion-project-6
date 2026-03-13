@@ -3,64 +3,78 @@ using System.Collections;
 
 public class BossHealth : MonoBehaviour
 {
-    public int maxHealth = 500;
+    public int maxHealth = 100;
     private int currentHealth;
-    private Vector3 originalPos;
-    private Transform visual;
+    public System.Action onDeathCallback; 
+
+    public float shakeIntensity = 0.3f;
+    public float shakeDuration = 0.15f;
+
+    private SpriteRenderer sr;
+    private Transform camTransform;
+    private Vector3 originalCamPos;
+    private bool isDead = false;
 
     void Start()
     {
         currentHealth = maxHealth;
-    
-        visual = transform.Find("BossVisual");
-        
-        if (visual != null)
-        {
-            originalPos = visual.localPosition;
-        }
+        sr = GetComponentInChildren<SpriteRenderer>();
+        if (Camera.main != null) camTransform = Camera.main.transform;
     }
 
     public void TakeDamage(int damage)
     {
-        currentHealth -= damage;
-        Debug.Log("Darah Boss: " + currentHealth);
+        if (isDead) return;
 
-        if (visual != null)
-        {
-            StopAllCoroutines();
-            StartCoroutine(ShakeEffect());
-        }
+        currentHealth -= damage;
         
-        if (currentHealth <= 0)
-        {
-            Die();
-        }
+        StopAllCoroutines();
+        if (sr != null) StartCoroutine(HitEffect());
+        StartCoroutine(ShakeCamera());
+
+        if (currentHealth <= 0) Die();
     }
 
-    IEnumerator ShakeEffect()
+    IEnumerator HitEffect()
     {
+        sr.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        sr.color = Color.white;
+    }
+
+    IEnumerator ShakeCamera()
+    {
+        if (camTransform == null) yield break;
+        
+        originalCamPos = camTransform.localPosition;
         float elapsed = 0f;
-        float duration = 0.2f;
-        float magnitude = 0.1f;
 
-        while (elapsed < duration)
+        while (elapsed < shakeDuration)
         {
-            float x = Random.Range(-1f, 1f) * magnitude;
-            float y = Random.Range(-1f, 1f) * magnitude;
+            float x = UnityEngine.Random.Range(-1f, 1f) * shakeIntensity;
+            float y = UnityEngine.Random.Range(-1f, 1f) * shakeIntensity;
 
-            visual.localPosition = new Vector3(originalPos.x + x, originalPos.y + y, originalPos.z);
-            
+            camTransform.localPosition = new Vector3(originalCamPos.x + x, originalCamPos.y + y, originalCamPos.z);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
-        visual.localPosition = originalPos;
+        camTransform.localPosition = originalCamPos;
     }
 
     void Die()
     {
-        
-        Debug.Log("Boss Mati!");
+        if (isDead) return;
+        isDead = true;
+        onDeathCallback?.Invoke();
         Destroy(gameObject);
+    }
+
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        if (other.CompareTag("PlayerAttack"))
+        {
+            TakeDamage(1);
+        }
     }
 }

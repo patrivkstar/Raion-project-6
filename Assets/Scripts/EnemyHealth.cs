@@ -19,7 +19,7 @@ public class EnemyHealth : MonoBehaviour
     private Collider2D col;
     private EnemyAI aiScript; 
 
-    public Action OnDeath; 
+    public Action onDeathCallback; 
 
     void Start()
     {
@@ -36,7 +36,6 @@ public class EnemyHealth : MonoBehaviour
         if (isDead) return;
 
         currentHealth -= damage;
-        Debug.Log(gameObject.name + " Sisa HP: " + currentHealth);
         
         StopAllCoroutines();
         StartCoroutine(HitEffect());
@@ -60,16 +59,13 @@ public class EnemyHealth : MonoBehaviour
     {
         isDead = true;
 
-        
         if (aiScript != null) aiScript.enabled = false;
         if (rb != null) rb.linearVelocity = Vector2.zero;
         if (col != null) col.enabled = false;
 
         if (anim != null)
         {
-           
             anim.Play("Kroco_Death", -1, 0f);
-            
             
             if (deathAnimationClip != null) {
                 yield return new WaitForSeconds(deathAnimationClip.length);
@@ -78,13 +74,12 @@ public class EnemyHealth : MonoBehaviour
             }
         }
 
-        OnDeath?.Invoke(); 
+        onDeathCallback?.Invoke(); 
         Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        
         if (other.CompareTag("PlayerAttack"))
         {
             TakeDamage(1);
