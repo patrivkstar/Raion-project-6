@@ -105,5 +105,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MortarBarrel
   height: 5
-  duration: 1.2
+  duration: 1
   spillPrefab: {fileID: 8888981180328447261, guid: 204063a46c3d23d4b99294737f172827, type: 3}
+  explodeDamage: 20
